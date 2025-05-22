@@ -1,0 +1,14 @@
+@startuml
+title Méthodologie de Développement
+
+start
+:Analyse des besoins;
+:Conception;
+:Développement;
+:Intégration;
+:Tests;
+:Déploiement;
+:Maintenance;
+stop
+
+@enduml

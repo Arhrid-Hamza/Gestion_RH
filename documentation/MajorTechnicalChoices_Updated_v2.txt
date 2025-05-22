@@ -1,0 +1,17 @@
+Grands choix techniques de Projets :
+
+1. Architecture : Adoption d'une architecture client-serveur avec un frontend React pour une interface utilisateur dynamique et un backend Node.js utilisant MongoDB pour la gestion des données et des API.
+
+2. Gestion d'état : Utilisation de Redux pour centraliser et gérer l'état global de l'application, facilitant la communication entre composants.
+
+3. Base de données : Choix d'une base de données NoSQL MongoDB pour une meilleure flexibilité dans la gestion des données non structurées et une scalabilité horizontale.
+
+4. Sécurité : Mise en place d'un système d'authentification et d'autorisation basé sur les rôles pour protéger les données sensibles.
+
+5. API REST : Conception d'API RESTful pour permettre une communication claire et standardisée entre le frontend et le backend.
+
+6. Tests : Intégration de tests unitaires et d'intégration pour garantir la qualité et la robustesse du code.
+
+7. Déploiement : Utilisation d'outils modernes de CI/CD pour automatiser les déploiements et assurer la continuité du service.
+
+Ces choix techniques ont été faits pour assurer la scalabilité, la maintenabilité et la sécurité du projet.

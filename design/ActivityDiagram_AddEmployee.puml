@@ -1,0 +1,14 @@
+@startuml
+start
+:Admin opens Add Employee form;
+:Admin fills employee details;
+:Admin submits form;
+if (Validation successful?) then (yes)
+  :Server creates employee record;
+  :Server syncs user record;
+  :Show success message;
+else (no)
+  :Show error message;
+endif
+stop
+@enduml

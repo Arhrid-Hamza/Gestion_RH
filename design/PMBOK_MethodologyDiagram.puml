@@ -1,0 +1,12 @@
+@startuml
+title Méthodologie de gestion de projet PMBOK
+
+start
+:Initiation;
+:Planification;
+:Exécution;
+:Surveillance et contrôle;
+:Clôture;
+stop
+
+@enduml

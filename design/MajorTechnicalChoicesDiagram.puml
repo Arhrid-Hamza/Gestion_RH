@@ -1,0 +1,16 @@
+@startuml
+title Grands choix techniques du projet
+
+start
+:Architecture client-serveur;
+:Frontend React pour interface dynamique;
+:Backend Node.js pour gestion des données et API;
+:Gestion d'état avec Redux;
+:Base de données relationnelle (MySQL/PostgreSQL);
+:Système d'authentification et d'autorisation basé sur les rôles;
+:API RESTful pour communication frontend-backend;
+:Tests unitaires et d'intégration intégrés;
+:Déploiement automatisé avec CI/CD;
+stop
+
+@enduml

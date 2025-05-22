@@ -1,0 +1,12 @@
+@startuml
+title Méthodologie de gestion de projet PMBOK - Détails
+
+start
+:Initiation - Définir le projet, identifier les parties prenantes, rédiger la charte de projet;
+:Planification - Élaborer un plan détaillé, définir objectifs, ressources, calendrier, risques, budgets;
+:Exécution - Réaliser les travaux, coordonner ressources, gérer équipes, communiquer;
+:Surveillance et contrôle - Suivre le progrès, identifier écarts, appliquer actions correctives, gérer changements;
+:Clôture - Finaliser activités, obtenir acceptation, documenter leçons apprises, libérer ressources;
+stop
+
+@enduml

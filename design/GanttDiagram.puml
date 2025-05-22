@@ -1,0 +1,19 @@
+@startgantt
+Project starts 2024-01-01
+[Analyse des besoins] lasts 10 days
+[Conception] lasts 15 days
+[Développement Frontend] lasts 30 days
+[Développement Backend] lasts 30 days
+[Tests et validation] lasts 20 days
+[Déploiement] lasts 10 days
+[Maintenance] lasts 60 days
+
+[Analyse des besoins] starts at project start
+[Conception] starts after [Analyse des besoins]
+[Développement Frontend] starts after [Conception]
+[Développement Backend] starts after [Conception]
+[Tests et validation] starts after [Développement Frontend] and [Développement Backend]
+[Déploiement] starts after [Tests et validation]
+[Maintenance] starts after [Déploiement]
+
+@endgantt

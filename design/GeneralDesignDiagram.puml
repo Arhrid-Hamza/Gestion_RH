@@ -1,0 +1,30 @@
+@startuml
+title Conception Générale du Projet RH
+
+package "Frontend" {
+  component "React.js Application" as Frontend
+  component "Tableau de bord" as Dashboard
+  component "Gestion des Utilisateurs" as UserManagement
+  component "Gestion des Employés" as EmployeeManagement
+  component "Gestion des Départements" as DepartmentManagement
+  component "Gestion des Projets" as ProjectManagement
+  component "Gestion des Rapports" as ReportManagement
+}
+
+package "Backend" {
+  component "API RESTful Node.js / Express" as BackendAPI
+  component "Logique Métier" as BusinessLogic
+  component "Base de données MongoDB" as Database
+}
+
+Frontend --> BackendAPI : Appels API RESTful
+BackendAPI --> BusinessLogic : Traitement logique
+BusinessLogic --> Database : Requêtes DB
+
+Dashboard --> UserManagement
+Dashboard --> EmployeeManagement
+Dashboard --> DepartmentManagement
+Dashboard --> ProjectManagement
+Dashboard --> ReportManagement
+
+@enduml

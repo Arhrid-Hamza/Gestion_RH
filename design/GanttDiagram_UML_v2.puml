@@ -1,0 +1,23 @@
+@startuml
+title Diagramme de Gantt du projet
+
+[Analyse des besoins] as Analyse
+[Conception] as Conception
+[Développement Frontend] as DevFrontend
+[Développement Backend] as DevBackend
+[Tests et validation] as Tests
+[Déploiement] as Deploy
+[Maintenance] as Maintenance
+
+' Dates modifiées selon la demande utilisateur
+' Le diagramme UML PlantUML ne supporte pas directement les dates, mais on peut indiquer les durées et séquences
+
+Analyse --> Conception : 10 jours (du 1 mars 2025)
+Conception --> DevFrontend : 15 jours
+Conception --> DevBackend : 15 jours
+DevFrontend --> Tests : 30 jours
+DevBackend --> Tests : 30 jours
+Tests --> Deploy : 20 jours
+Deploy --> Maintenance : 10 jours
+Maintenance : 60 jours (jusqu'au 23 mai 2025)
+

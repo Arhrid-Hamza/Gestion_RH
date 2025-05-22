@@ -1,0 +1,59 @@
+@startuml
+class User {
+  - id: Number
+  - name: String
+  - email: String
+  - role: String
+  - password: String
+}
+
+class Admin {
+  + manageUsers()
+  + manageEmployees()
+  + manageDepartments()
+  + manageProjects()
+}
+
+class Employee {
+  - id: Number
+  - name: String
+  - mail: String
+  - password: String
+  - role: String
+  - department: String
+}
+
+class Department {
+  - id: Number
+  - name: String
+  - description: String
+}
+
+class Project {
+  - id: Number
+  - name: String
+  - description: String
+  - departmentResponsible: Number
+  - startDate: Date
+  - endDate: Date
+  - employeeResponsible: Number
+}
+
+User <|-- Admin
+User <|-- Employee
+
+User "1" -- "1" Employee : syncs role
+Employee "*" -- "1" Department : belongs to
+Project "*" -- "1" Department : departmentResponsible
+Project "*" -- "1" Employee : employeeResponsible
+
+Admin "1" o-- "*" User : manages
+Admin "1" o-- "*" Employee : manages
+Admin "1" o-- "*" Department : manages
+Admin "1" o-- "*" Project : manages
+
+note right of User
+  User role must be either "admin" or "employee"
+end note
+
+@enduml

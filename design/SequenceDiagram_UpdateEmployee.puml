@@ -1,0 +1,20 @@
+@startuml
+actor Admin
+participant Frontend
+participant Server
+participant Database
+
+Admin -> Frontend: Open update employee form
+Frontend -> Server: GET /api/employees/:id
+Server -> Database: Find employee by id
+Database --> Server: Return employee data
+Server --> Frontend: Return employee data
+Frontend -> Admin: Display employee data in form
+
+Admin -> Frontend: Modify employee data and submit
+Frontend -> Server: PUT /api/employees/:id with updated data
+Server -> Database: Update employee record
+Database --> Server: Return updated employee
+Server --> Frontend: Return updated employee
+Frontend -> Admin: Show success or error message
+@enduml
