@@ -35,6 +35,11 @@ const projectSchema = new mongoose.Schema({
   startDate: Date,
   endDate: Date,
   employeeResponsible: Number,
+  status: {
+    type: String,
+    enum: ['Active', 'Inactive', 'Completed'],
+    default: 'Active',
+  },
 });
 
 const reportSchema = new mongoose.Schema({
