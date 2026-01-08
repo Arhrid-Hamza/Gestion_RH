@@ -37,14 +37,24 @@ const projectSchema = new mongoose.Schema({
   employeeResponsible: Number,
 });
 
+const reportSchema = new mongoose.Schema({
+  id: Number,
+  title: String,
+  generatedBy: String,
+  date: Date,
+  content: String,
+});
+
 const User = mongoose.model('User', userSchema);
 const Employee = mongoose.model('Employee', employeeSchema);
 const Department = mongoose.model('Department', departmentSchema);
 const Project = mongoose.model('Project', projectSchema);
+const Report = mongoose.model('Report', reportSchema);
 
 module.exports = {
   User,
   Employee,
   Department,
   Project,
+  Report,
 };

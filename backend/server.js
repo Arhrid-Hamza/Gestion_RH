@@ -11,11 +11,14 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // MongoDB connection
-mongoose.connect('mongodb://localhost:27017/rh_management', {
+mongoose.connect('mongodb://127.0.0.1:27017/rh_management', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-}).then(() => {
+}).then(async () => {
   console.log('Connected to MongoDB');
+  // Migrate users from employees to users table
+  await syncUsersWithEmployees();
+  console.log('Users migrated from employees to users table');
 }).catch((err) => {
   console.error('MongoDB connection error:', err);
 });
@@ -111,7 +114,7 @@ app.get('/api/projects', async (req, res) => {
 
     // Add employeeResponsibleName and departmentResponsibleName to each project
     const projectsWithNames = projects.map(project => {
-      return {
+      return { 
         ...project.toObject(),
         employeeResponsibleName: employeeMap[project.employeeResponsible] || '',
         departmentResponsibleName: departmentMap[project.departmentResponsible] || '',
