@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import { showSuccessAlert, showErrorAlert } from '../utils/alerts';
 import { theme } from '../theme';
 
 export default function AddEmployee({ navigation }) {
@@ -10,7 +11,7 @@ export default function AddEmployee({ navigation }) {
 
   const handleAdd = async () => {
     if (!name || !email || !position) {
-      Alert.alert('Error', 'Please fill all fields');
+      showErrorAlert('Validation Error', 'Please fill all fields');
       return;
     }
 
@@ -23,13 +24,14 @@ export default function AddEmployee({ navigation }) {
       });
 
       if (response.ok) {
-        Alert.alert('Success', 'Employee added successfully');
-        navigation.goBack();
+        showSuccessAlert('Success', 'Employee added successfully', () => {
+          navigation.goBack();
+        });
       } else {
-        Alert.alert('Error', 'Failed to add employee');
+        showErrorAlert('Error', 'Failed to add employee');
       }
     } catch (error) {
-      Alert.alert('Error', 'Could not reach server');
+      showErrorAlert('Error', 'Could not reach server');
     } finally {
       setLoading(false);
     }

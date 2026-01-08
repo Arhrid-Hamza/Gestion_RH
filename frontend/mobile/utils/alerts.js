@@ -1,29 +1,48 @@
-import { Alert } from 'react-native';
+import Swal from 'sweetalert2';
 
 export const showConfirmationAlert = (title, message, onConfirm, onCancel) => {
-  Alert.alert(
-    title,
-    message,
-    [
-      {
-        text: 'Cancel',
-        onPress: onCancel || (() => {}),
-        style: 'cancel',
-      },
-      {
-        text: 'Confirm',
-        onPress: onConfirm,
-        style: 'destructive',
-      },
-    ],
-    { cancelable: false }
-  );
+  Swal.fire({
+    title: title,
+    text: message,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#2e7d32',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, confirm!',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      onConfirm();
+    } else if (result.isDismissed) {
+      if (onCancel) onCancel();
+    }
+  });
 };
 
 export const showSuccessAlert = (title, message, onClose) => {
-  Alert.alert(title, message, [{ text: 'OK', onPress: onClose || (() => {}) }]);
+  Swal.fire({
+    title: title,
+    text: message,
+    icon: 'success',
+    confirmButtonColor: '#2e7d32',
+    confirmButtonText: 'OK'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      if (onClose) onClose();
+    }
+  });
 };
 
 export const showErrorAlert = (title, message, onClose) => {
-  Alert.alert(title, message, [{ text: 'OK', onPress: onClose || (() => {}) }]);
+  Swal.fire({
+    title: title,
+    text: message,
+    icon: 'error',
+    confirmButtonColor: '#2e7d32',
+    confirmButtonText: 'OK'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      if (onClose) onClose();
+    }
+  });
 };

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import { showSuccessAlert, showErrorAlert } from '../utils/alerts';
 import { theme } from '../theme';
 
 export default function UpdateUser({ navigation, route }) {
@@ -10,7 +11,7 @@ export default function UpdateUser({ navigation, route }) {
 
   const handleUpdate = async () => {
     if (!name || !email) {
-      Alert.alert('Error', 'Please fill required fields');
+      showErrorAlert('Validation Error', 'Please fill required fields');
       return;
     }
 
@@ -24,13 +25,14 @@ export default function UpdateUser({ navigation, route }) {
       });
 
       if (response.ok) {
-        Alert.alert('Success', 'User updated successfully');
-        navigation.goBack();
+        showSuccessAlert('Success', 'User updated successfully', () => {
+          navigation.goBack();
+        });
       } else {
-        Alert.alert('Error', 'Failed to update user');
+        showErrorAlert('Error', 'Failed to update user');
       }
     } catch (error) {
-      Alert.alert('Error', 'Could not reach server');
+      showErrorAlert('Error', 'Could not reach server');
     } finally {
       setLoading(false);
     }
