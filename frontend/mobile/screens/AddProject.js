@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchDepartments, fetchEmployees, fetchProjects } from '../store/actions';
 import { showSuccessAlert, showErrorAlert } from '../utils/alerts';
 import { theme } from '../theme';
 
@@ -17,7 +19,18 @@ export default function AddProject({ navigation }) {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [status, setStatus] = useState('Active');
+  const [departmentResponsible, setDepartmentResponsible] = useState(null);
+  const [employeeResponsible, setEmployeeResponsible] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+  const departments = useSelector((state) => state.departments || []);
+  const employees = useSelector((state) => state.employees || []);
+
+  useEffect(() => {
+    dispatch(fetchDepartments());
+    dispatch(fetchEmployees());
+  }, [dispatch]);
 
   const handleAddProject = async () => {
     if (!name.trim()) {
@@ -36,11 +49,14 @@ export default function AddProject({ navigation }) {
           startDate,
           endDate,
           status,
+          departmentResponsible: departmentResponsible ? Number(departmentResponsible) : null,
+          employeeResponsible: employeeResponsible ? Number(employeeResponsible) : null,
         }),
       });
 
       if (response.ok) {
         showSuccessAlert('Success', 'Project added successfully', () => {
+          dispatch(fetchProjects());
           navigation.goBack();
         });
       } else {
@@ -104,6 +120,44 @@ export default function AddProject({ navigation }) {
               editable={!loading}
             />
           </View>
+        </View>
+
+        <View style={styles.formGroup}>
+          <Text style={styles.label}>Department Responsible</Text>
+          {departments.length === 0 ? (
+            <Text style={styles.helperText}>No departments available</Text>
+          ) : (
+            <View style={styles.selector}>
+              {departments.map((d) => (
+                <TouchableOpacity
+                  key={d.id}
+                  style={[styles.selectorItem, departmentResponsible == d.id && styles.selectorItemActive]}
+                  onPress={() => setDepartmentResponsible(d.id)}
+                >
+                  <Text style={[styles.selectorText, departmentResponsible == d.id && styles.selectorTextActive]}>{d.name}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+        </View>
+
+        <View style={styles.formGroup}>
+          <Text style={styles.label}>Employee Responsible</Text>
+          {employees.length === 0 ? (
+            <Text style={styles.helperText}>No employees available</Text>
+          ) : (
+            <View style={styles.selector}>
+              {employees.map((e) => (
+                <TouchableOpacity
+                  key={e.id}
+                  style={[styles.selectorItem, employeeResponsible == e.id && styles.selectorItemActive]}
+                  onPress={() => setEmployeeResponsible(e.id)}
+                >
+                  <Text style={[styles.selectorText, employeeResponsible == e.id && styles.selectorTextActive]}>{e.name || e.fullName || e.mail || e.email}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
         </View>
 
         <View style={styles.formGroup}>
@@ -225,6 +279,36 @@ const styles = StyleSheet.create({
   },
   statusBtnTextActive: {
     color: theme.colors.white,
+  },
+  selector: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: theme.spacing.sm,
+  },
+  selectorItem: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: theme.borderRadius.md,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    backgroundColor: theme.colors.white,
+    marginRight: theme.spacing.sm,
+    marginBottom: theme.spacing.sm,
+  },
+  selectorItemActive: {
+    backgroundColor: theme.colors.primary,
+    borderColor: theme.colors.primary,
+  },
+  selectorText: {
+    color: theme.colors.text,
+  },
+  selectorTextActive: {
+    color: theme.colors.white,
+  },
+  helperText: {
+    color: theme.colors.text,
+    fontStyle: 'italic',
+    fontSize: 13,
   },
   buttonGroup: {
     flexDirection: 'row',

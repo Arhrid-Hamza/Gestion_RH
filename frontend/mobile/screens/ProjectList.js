@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchProjects } from '../store/actions';
+import { fetchProjects, fetchDepartments, fetchEmployees } from '../store/actions';
 import { showConfirmationAlert, showSuccessAlert, showErrorAlert } from '../utils/alerts';
 import { theme } from '../theme';
 
-const ProjectItem = ({ project, onEdit, onDelete }) => (
+const ProjectItem = ({ project, departmentName, employeeName, onEdit, onDelete }) => (
   <View style={styles.projectCard}>
     <View style={styles.projectInfo}>
       <Text style={styles.projectName}>{project.name || 'Untitled Project'}</Text>
       <Text style={styles.projectDescription}>{project.description || 'No description'}</Text>
+      {departmentName ? <Text style={styles.assignedText}>Department: {departmentName}</Text> : null}
+      {employeeName ? <Text style={styles.assignedText}>Responsible: {employeeName}</Text> : null}
       <View style={styles.statusContainer}>
         <Text style={styles.statusText}>{project.status || 'Active'}</Text>
       </View>
@@ -28,9 +30,13 @@ const ProjectItem = ({ project, onEdit, onDelete }) => (
 export default function ProjectList({ navigation }) {
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.projects || []);
+  const departments = useSelector((state) => state.departments || []);
+  const employees = useSelector((state) => state.employees || []);
 
   useEffect(() => {
     dispatch(fetchProjects());
+    dispatch(fetchDepartments());
+    dispatch(fetchEmployees());
   }, [dispatch]);
 
   const handleEdit = (id) => {
@@ -73,13 +79,19 @@ export default function ProjectList({ navigation }) {
       <FlatList
         data={projects}
         keyExtractor={(item) => String(item.id)}
-        renderItem={({ item }) => (
-          <ProjectItem
-            project={item}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-        )}
+        renderItem={({ item }) => {
+          const dept = departments.find((d) => d.id === item.departmentResponsible);
+          const emp = employees.find((e) => e.id === item.employeeResponsible);
+          return (
+            <ProjectItem
+              project={item}
+              departmentName={dept ? dept.name : null}
+              employeeName={emp ? (emp.name || emp.fullName || emp.mail || emp.email) : null}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+          );
+        }}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
       />
@@ -150,6 +162,11 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: theme.colors.textLight,
     marginBottom: 8,
+  },
+  assignedText: {
+    fontSize: 13,
+    color: theme.colors.text,
+    marginBottom: 6,
   },
   statusContainer: {
     backgroundColor: theme.colors.success,
