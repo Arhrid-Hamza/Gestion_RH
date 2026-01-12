@@ -10,28 +10,29 @@ import {
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { showSuccessAlert, showErrorAlert } from '../utils/alerts';
-import { theme } from '../theme';
+import { useTheme, theme as staticTheme } from '../context/ThemeContext';
 
-export default function UpdateEmployee({ navigation, route }) {
-  const { employeeId } = route.params;
+export default function UpdateEmployee({ navigation, route }) {  const { theme } = useTheme();  const { employeeId } = route.params;
   const employees = useSelector((state) => state.employees || []);
   const employee = employees.find((e) => e.id === employeeId);
 
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [position, setPosition] = useState('');
+  const [mail, setMail] = useState('');
+  const [role, setRole] = useState('employee');
+  const [department, setDepartment] = useState('');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (employee) {
       setName(employee.name || '');
-      setEmail(employee.email || '');
-      setPosition(employee.position || '');
+      setMail(employee.mail || '');
+      setRole(employee.role || 'employee');
+      setDepartment(employee.department ? String(employee.department) : '');
     }
   }, [employee]);
 
   const handleUpdateEmployee = async () => {
-    if (!name.trim() || !email.trim()) {
+    if (!name.trim() || !mail.trim()) {
       showErrorAlert('Validation Error', 'Name and email are required');
       return;
     }
@@ -43,8 +44,9 @@ export default function UpdateEmployee({ navigation, route }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: name.trim(),
-          email: email.trim(),
-          position: position.trim(),
+          mail: mail.trim(),
+          role,
+          department: department ? Number(department) : null,
         }),
       });
 
@@ -91,20 +93,39 @@ export default function UpdateEmployee({ navigation, route }) {
           <TextInput
             style={styles.input}
             placeholder="Enter email"
-            value={email}
-            onChangeText={setEmail}
+            value={mail}
+            onChangeText={setMail}
             keyboardType="email-address"
             editable={!loading}
           />
         </View>
 
         <View style={styles.formGroup}>
-          <Text style={styles.label}>Position</Text>
+          <Text style={styles.label}>Role</Text>
+          <View style={styles.roleButtons}>
+            {['employee', 'admin'].map((r) => (
+              <TouchableOpacity
+                key={r}
+                style={[styles.roleButton, role === r && styles.roleButtonActive]}
+                onPress={() => setRole(r)}
+                disabled={loading}
+              >
+                <Text style={[styles.roleButtonText, role === r && styles.roleButtonTextActive]}>
+                  {r.charAt(0).toUpperCase() + r.slice(1)}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+
+        <View style={styles.formGroup}>
+          <Text style={styles.label}>Department ID</Text>
           <TextInput
             style={styles.input}
-            placeholder="Enter position"
-            value={position}
-            onChangeText={setPosition}
+            placeholder="Enter department ID"
+            value={department}
+            onChangeText={setDepartment}
+            keyboardType="numeric"
             editable={!loading}
           />
         </View>
@@ -137,71 +158,96 @@ export default function UpdateEmployee({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.secondary,
+    backgroundColor: staticTheme.colors.secondary,
   },
   content: {
-    padding: theme.spacing.lg,
+    padding: staticTheme.spacing.lg,
     paddingBottom: 40,
   },
   title: {
     fontSize: 24,
     fontWeight: '700',
-    color: theme.colors.primary,
-    marginBottom: theme.spacing.lg,
+    color: staticTheme.colors.primary,
+    marginBottom: staticTheme.spacing.lg,
   },
   formGroup: {
-    marginBottom: theme.spacing.lg,
+    marginBottom: staticTheme.spacing.lg,
   },
   label: {
     fontSize: 14,
     fontWeight: '600',
-    color: theme.colors.text,
-    marginBottom: theme.spacing.sm,
+    color: staticTheme.colors.text,
+    marginBottom: staticTheme.spacing.sm,
   },
   input: {
-    backgroundColor: theme.colors.white,
+    backgroundColor: staticTheme.colors.card,
     borderWidth: 1,
-    borderColor: theme.colors.border,
-    borderRadius: theme.borderRadius.md,
+    borderColor: staticTheme.colors.border,
+    borderRadius: staticTheme.borderRadius.md,
     paddingVertical: 12,
-    paddingHorizontal: theme.spacing.md,
+    paddingHorizontal: staticTheme.spacing.md,
     fontSize: 14,
-    color: theme.colors.text,
+    color: staticTheme.colors.text,
+  },
+  roleButtonGroup: {
+    flexDirection: 'row',
+    gap: staticTheme.spacing.md,
+  },
+  roleButton: {
+    flex: 1,
+    paddingVertical: 12,
+    backgroundColor: staticTheme.colors.card,
+    borderWidth: 1,
+    borderColor: staticTheme.colors.border,
+    borderRadius: staticTheme.borderRadius.md,
+    alignItems: 'center',
+  },
+  roleButtonActive: {
+    backgroundColor: staticTheme.colors.primary,
+    borderColor: staticTheme.colors.primary,
+  },
+  roleButtonText: {
+    fontSize: 14,
+    color: staticTheme.colors.text,
+    fontWeight: '600',
+  },
+  roleButtonTextActive: {
+    color: staticTheme.colors.white,
   },
   buttonGroup: {
     flexDirection: 'row',
-    gap: theme.spacing.md,
-    marginTop: theme.spacing.xl,
+    gap: staticTheme.spacing.md,
+    marginTop: staticTheme.spacing.xl,
   },
   cancelBtn: {
     flex: 1,
     paddingVertical: 14,
-    backgroundColor: theme.colors.lightGray,
-    borderRadius: theme.borderRadius.md,
+    backgroundColor: staticTheme.colors.lightGray,
+    borderRadius: staticTheme.borderRadius.md,
   },
   submitBtn: {
     flex: 1,
     paddingVertical: 14,
-    backgroundColor: theme.colors.primary,
-    borderRadius: theme.borderRadius.md,
+    backgroundColor: staticTheme.colors.primary,
+    borderRadius: staticTheme.borderRadius.md,
   },
   cancelBtnText: {
     textAlign: 'center',
     fontSize: 16,
     fontWeight: '600',
-    color: theme.colors.text,
+    color: staticTheme.colors.text,
   },
   submitBtnText: {
     textAlign: 'center',
     fontSize: 16,
     fontWeight: '600',
-    color: theme.colors.white,
+    color: staticTheme.colors.white,
   },
   disabledBtn: {
     opacity: 0.6,
   },
   errorText: {
     fontSize: 16,
-    color: theme.colors.error,
+    color: staticTheme.colors.error,
   },
 });

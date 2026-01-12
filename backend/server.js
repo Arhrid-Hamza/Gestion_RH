@@ -23,7 +23,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/rh_management', {
   console.error('MongoDB connection error:', err);
 });
 
-const { User, Employee, Department, Project } = require('./models');
+const { User, Employee, Department, Project, Report } = require('./models');
 
 async function syncUsersWithEmployees() {
   const employees = await Employee.find({});
@@ -177,6 +177,75 @@ app.post('/api/projects', async (req, res) => {
   }
 });
 
+// API routes for reports
+app.get('/api/reports', async (req, res) => {
+  try {
+    const reports = await Report.find({});
+    res.json(reports);
+  } catch (err) {
+    console.error('Failed to fetch reports:', err);
+    res.status(500).json({ error: 'Failed to fetch reports' });
+  }
+});
+
+app.get('/api/reports/:id', async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const report = await Report.findOne({ id: id });
+    if (!report) {
+      return res.status(404).json({ error: 'Report not found' });
+    }
+    res.json(report);
+  } catch (err) {
+    console.error('Failed to fetch report:', err);
+    res.status(500).json({ error: 'Failed to fetch report' });
+  }
+});
+
+app.post('/api/reports', async (req, res) => {
+  try {
+    if (!req.body.id) {
+      const maxReport = await Report.findOne().sort({ id: -1 });
+      req.body.id = maxReport ? maxReport.id + 1 : 1;
+    } else {
+      req.body.id = Number(req.body.id);
+    }
+    const newReport = new Report(req.body);
+    await newReport.save();
+    res.json(newReport);
+  } catch (err) {
+    console.error('Failed to add report:', err);
+    res.status(500).json({ error: 'Failed to add report' });
+  }
+});
+
+app.put('/api/reports/:id', async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const updatedReport = await Report.findOneAndUpdate({ id: id }, req.body, { new: true });
+    if (!updatedReport) {
+      return res.status(404).json({ error: 'Report not found' });
+    }
+    res.json(updatedReport);
+  } catch (err) {
+    console.error('Failed to update report:', err);
+    res.status(500).json({ error: 'Failed to update report' });
+  }
+});
+
+app.delete('/api/reports/:id', async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const deletedReport = await Report.findOneAndDelete({ id: id });
+    if (!deletedReport) {
+      return res.status(404).json({ error: 'Report not found' });
+    }
+    res.json({ message: 'Report deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to delete report' });
+  }
+});
+
 // Delete project by id
 app.delete('/api/projects/:id', async (req, res) => {
   try {
@@ -191,31 +260,19 @@ app.delete('/api/projects/:id', async (req, res) => {
   }
 });
 
-// Update user and sync role to employee with authorization checks
+// Update user and sync role to employee
 app.put('/api/users/:id', async (req, res) => {
   try {
     const id = Number(req.params.id);
-    const currentUser = req.currentUser;
 
-    // Check if role update is attempted
-    if (req.body.role) {
-      // Only admins can update roles
-      if (currentUser.role !== 'admin') {
-        // If user tries to update their own role, deny
-        if (currentUser.id === id) {
-          res.status(403).json({ error: 'Users cannot update their own role' });
-          return;
-        }
-        // Non-admins cannot update others' roles
-        res.status(403).json({ error: 'Only admins can update user roles' });
-        return;
-      }
+    // Validate required fields
+    if (!req.body.name || !req.body.email) {
+      return res.status(400).json({ error: 'Name and email are required' });
     }
 
     const updatedUser = await User.findOneAndUpdate({ id: id }, req.body, { new: true });
     if (!updatedUser) {
-      res.status(404).json({ error: 'User not found' });
-      return;
+      return res.status(404).json({ error: 'User not found' });
     }
     // Sync role to employee
     if (req.body.role) {
@@ -224,6 +281,7 @@ app.put('/api/users/:id', async (req, res) => {
     }
     res.json(updatedUser);
   } catch (err) {
+    console.error('Failed to update user:', err);
     res.status(500).json({ error: 'Failed to update user' });
   }
 });

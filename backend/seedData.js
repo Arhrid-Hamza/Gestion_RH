@@ -46,7 +46,7 @@ mongoose.connect('mongodb://localhost:27017/rh_management', {
 
   // Sample reports
   const reports = [
-    { id: 1, title: 'Report 1', content: 'Report content here', authorId: 1, date: new Date() },
+    { id: 1, title: 'Report 1', content: 'Report content here', authorId: 1, date: new Date(), employeeResponsible: 2 },
   ];
   await Report.insertMany(reports);
 

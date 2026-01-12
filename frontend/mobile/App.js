@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AuthProvider, AuthContext } from './auth/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { Provider } from 'react-redux';
 import store from './store/store';
+import * as Updates from 'expo-updates';
 import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
@@ -64,15 +66,36 @@ function AppStack() {
 }
 
 export default function App() {
+  useEffect(() => {
+    async function checkForUpdates() {
+      try {
+        const update = await Updates.checkForUpdateAsync();
+        if (update.isAvailable) {
+          await Updates.fetchUpdateAsync();
+          await Updates.reloadAsync();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    // eslint-disable-next-line no-undef
+    if (!__DEV__) {
+      checkForUpdates();
+    }
+  }, []);
+
   return (
     <Provider store={store}>
-      <AuthProvider>
-        <NavigationContainer>
-          <AuthContext.Consumer>
-            {({ user }) => (user ? <AppStack /> : <AuthStack />)}
-          </AuthContext.Consumer>
-        </NavigationContainer>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <NavigationContainer>
+            <AuthContext.Consumer>
+              {({ user }) => (user ? <AppStack /> : <AuthStack />)}
+            </AuthContext.Consumer>
+          </NavigationContainer>
+        </AuthProvider>
+      </ThemeProvider>
     </Provider>
   );
 }

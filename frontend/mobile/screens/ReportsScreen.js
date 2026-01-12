@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchReports } from '../store/actions';
-import { theme } from '../theme';
+import { useTheme, theme as staticTheme } from '../context/ThemeContext';
 
 const ReportItem = ({ report }) => (
   <View style={styles.reportCard}>
@@ -19,6 +19,7 @@ const ReportItem = ({ report }) => (
 );
 
 export default function ReportsScreen({ navigation }) {
+  const { theme } = useTheme();
   const dispatch = useDispatch();
   const reports = useSelector((state) => state.reports || []);
 
@@ -55,48 +56,48 @@ export default function ReportsScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.secondary,
+    backgroundColor: staticTheme.colors.secondary,
   },
   header: {
-    backgroundColor: theme.colors.white,
+    backgroundColor: staticTheme.colors.card,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: theme.spacing.md,
-    paddingHorizontal: theme.spacing.lg,
-    shadowColor: theme.colors.shadow,
+    paddingVertical: staticTheme.spacing.md,
+    paddingHorizontal: staticTheme.spacing.lg,
+    shadowColor: staticTheme.colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-    marginBottom: theme.spacing.lg,
+    marginBottom: staticTheme.spacing.lg,
   },
   headerTitle: {
     fontSize: 24,
     fontWeight: '700',
-    color: theme.colors.primary,
+    color: staticTheme.colors.primary,
   },
   addBtn: {
-    backgroundColor: theme.colors.primary,
+    backgroundColor: staticTheme.colors.primary,
     paddingVertical: 8,
     paddingHorizontal: 12,
-    borderRadius: theme.borderRadius.md,
+    borderRadius: staticTheme.borderRadius.md,
   },
   addBtnText: {
-    color: theme.colors.white,
+    color: staticTheme.colors.white,
     fontWeight: '600',
     fontSize: 14,
   },
   listContent: {
-    paddingHorizontal: theme.spacing.lg,
-    paddingBottom: theme.spacing.lg,
+    paddingHorizontal: staticTheme.spacing.lg,
+    paddingBottom: staticTheme.spacing.lg,
   },
   reportCard: {
-    backgroundColor: theme.colors.white,
-    borderRadius: theme.borderRadius.md,
-    padding: theme.spacing.md,
-    marginBottom: theme.spacing.md,
-    shadowColor: theme.colors.shadow,
+    backgroundColor: staticTheme.colors.card,
+    borderRadius: staticTheme.borderRadius.md,
+    padding: staticTheme.spacing.md,
+    marginBottom: staticTheme.spacing.md,
+    shadowColor: staticTheme.colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
@@ -105,30 +106,30 @@ const styles = StyleSheet.create({
   reportHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: theme.spacing.sm,
+    marginBottom: staticTheme.spacing.sm,
   },
   reportTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: theme.colors.text,
+    color: staticTheme.colors.text,
     flex: 1,
   },
   reportDate: {
     fontSize: 12,
-    color: theme.colors.textLight,
+    color: staticTheme.colors.textLight,
   },
   reportDescription: {
     fontSize: 13,
-    color: theme.colors.textLight,
-    marginBottom: theme.spacing.md,
+    color: staticTheme.colors.textLight,
+    marginBottom: staticTheme.spacing.md,
   },
   reportMeta: {
     flexDirection: 'row',
-    gap: theme.spacing.md,
+    gap: staticTheme.spacing.md,
   },
   reportType: {
-    backgroundColor: theme.colors.info,
-    color: theme.colors.white,
+    backgroundColor: staticTheme.colors.info,
+    color: staticTheme.colors.white,
     paddingVertical: 4,
     paddingHorizontal: 8,
     borderRadius: 4,
@@ -136,8 +137,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   reportStatus: {
-    backgroundColor: theme.colors.warning,
-    color: theme.colors.white,
+    backgroundColor: staticTheme.colors.warning,
+    color: staticTheme.colors.white,
     paddingVertical: 4,
     paddingHorizontal: 8,
     borderRadius: 4,
@@ -151,6 +152,6 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 16,
-    color: theme.colors.textLight,
+    color: staticTheme.colors.textLight,
   },
 });

@@ -10,10 +10,9 @@ import {
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { showSuccessAlert, showErrorAlert } from '../utils/alerts';
-import { theme } from '../theme';
+import { useTheme, theme as staticTheme } from '../context/ThemeContext';
 
-export default function UpdateDepartment({ navigation, route }) {
-  const { departmentId } = route.params;
+export default function UpdateDepartment({ navigation, route }) {  const { theme } = useTheme();  const { departmentId } = route.params;
   const departments = useSelector((state) => state.departments || []);
   const department = departments.find((d) => d.id === departmentId);
 
@@ -124,76 +123,76 @@ export default function UpdateDepartment({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.secondary,
+    backgroundColor: staticTheme.colors.secondary,
   },
   content: {
-    padding: theme.spacing.lg,
+    padding: staticTheme.spacing.lg,
     paddingBottom: 40,
   },
   title: {
     fontSize: 24,
     fontWeight: '700',
-    color: theme.colors.primary,
-    marginBottom: theme.spacing.lg,
+    color: staticTheme.colors.primary,
+    marginBottom: staticTheme.spacing.lg,
   },
   formGroup: {
-    marginBottom: theme.spacing.lg,
+    marginBottom: staticTheme.spacing.lg,
   },
   label: {
     fontSize: 14,
     fontWeight: '600',
-    color: theme.colors.text,
-    marginBottom: theme.spacing.sm,
+    color: staticTheme.colors.text,
+    marginBottom: staticTheme.spacing.sm,
   },
   input: {
-    backgroundColor: theme.colors.white,
+    backgroundColor: staticTheme.colors.card,
     borderWidth: 1,
-    borderColor: theme.colors.border,
-    borderRadius: theme.borderRadius.md,
+    borderColor: staticTheme.colors.border,
+    borderRadius: staticTheme.borderRadius.md,
     paddingVertical: 12,
-    paddingHorizontal: theme.spacing.md,
+    paddingHorizontal: staticTheme.spacing.md,
     fontSize: 14,
-    color: theme.colors.text,
+    color: staticTheme.colors.text,
   },
   textArea: {
-    paddingVertical: theme.spacing.md,
+    paddingVertical: staticTheme.spacing.md,
     height: 120,
     textAlignVertical: 'top',
   },
   buttonGroup: {
     flexDirection: 'row',
-    gap: theme.spacing.md,
-    marginTop: theme.spacing.xl,
+    gap: staticTheme.spacing.md,
+    marginTop: staticTheme.spacing.xl,
   },
   cancelBtn: {
     flex: 1,
     paddingVertical: 14,
-    backgroundColor: theme.colors.lightGray,
-    borderRadius: theme.borderRadius.md,
+    backgroundColor: staticTheme.colors.lightGray,
+    borderRadius: staticTheme.borderRadius.md,
   },
   submitBtn: {
     flex: 1,
     paddingVertical: 14,
-    backgroundColor: theme.colors.primary,
-    borderRadius: theme.borderRadius.md,
+    backgroundColor: staticTheme.colors.primary,
+    borderRadius: staticTheme.borderRadius.md,
   },
   cancelBtnText: {
     textAlign: 'center',
     fontSize: 16,
     fontWeight: '600',
-    color: theme.colors.text,
+    color: staticTheme.colors.text,
   },
   submitBtnText: {
     textAlign: 'center',
     fontSize: 16,
     fontWeight: '600',
-    color: theme.colors.white,
+    color: staticTheme.colors.white,
   },
   disabledBtn: {
     opacity: 0.6,
   },
   errorText: {
     fontSize: 16,
-    color: theme.colors.error,
+    color: staticTheme.colors.error,
   },
 });

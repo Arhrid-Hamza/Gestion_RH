@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { AuthContext } from '../auth/AuthContext';
-import { theme } from '../theme';
+import { useTheme } from '../context/ThemeContext';
 
 export default function HomeScreen({ navigation }) {
   const { user, signOut } = useContext(AuthContext);
+  const { theme } = useTheme();
 
   const handleLogout = async () => {
     await signOut();
@@ -20,23 +21,23 @@ export default function HomeScreen({ navigation }) {
   ];
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.navbar}>
-        <Text style={styles.title}>HR Management</Text>
+    <ScrollView style={[styles.container, { backgroundColor: theme.colors.secondary }]}>
+      <View style={[styles.navbar, { backgroundColor: theme.colors.card }]}>
+        <Text style={[styles.title, { color: theme.colors.primary }]}>HR Management</Text>
         <TouchableOpacity onPress={handleLogout}>
-          <Text style={styles.logoutBtn}>Logout</Text>
+          <Text style={[styles.logoutBtn, { color: theme.colors.primary }]}>Logout</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.content}>
-        <Text style={styles.mainTitle}>Welcome to the HR Management System</Text>
-        <Text style={styles.description}>
+        <Text style={[styles.mainTitle, { color: theme.colors.text }]}>Welcome to the HR Management System</Text>
+        <Text style={[styles.description, { color: theme.colors.textLight }]}>
           Your one-stop solution for managing human resources efficiently and effectively. This application allows you to manage users, employees, departments, projects, and reports seamlessly.
         </Text>
 
         <View style={styles.featureList}>
           {features.map((feature, index) => (
-            <Text key={index} style={styles.featureItem}>
+            <Text key={index} style={[styles.featureItem, { color: theme.colors.text }]}>
               {feature}
             </Text>
           ))}
@@ -46,21 +47,21 @@ export default function HomeScreen({ navigation }) {
           {user?.role === 'admin' ? (
             <>
               <TouchableOpacity
-                style={styles.button}
+                style={[styles.button, { backgroundColor: theme.colors.primary }]}
                 onPress={() => navigation.navigate('AdminDashboard')}
               >
                 <Text style={styles.buttonText}>📊 Admin Dashboard</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.button, styles.secondaryButton]}
+                style={[styles.button, styles.secondaryButton, { backgroundColor: theme.colors.card, borderColor: theme.colors.primary }]}
                 onPress={() => navigation.navigate('UserDashboard')}
               >
-                <Text style={styles.secondaryButtonText}>👤 User Dashboard</Text>
+                <Text style={[styles.secondaryButtonText, { color: theme.colors.primary }]}>👤 User Dashboard</Text>
               </TouchableOpacity>
             </>
           ) : (
             <TouchableOpacity
-              style={styles.button}
+              style={[styles.button, { backgroundColor: theme.colors.primary }]}
               onPress={() => navigation.navigate('UserDashboard')}
             >
               <Text style={styles.buttonText}>👤 User Dashboard</Text>
@@ -75,16 +76,13 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.secondary,
   },
   navbar: {
-    backgroundColor: theme.colors.white,
-    paddingVertical: theme.spacing.md,
-    paddingHorizontal: theme.spacing.lg,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    shadowColor: theme.colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -93,62 +91,53 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '700',
-    color: theme.colors.primary,
   },
   logoutBtn: {
-    color: theme.colors.primary,
     fontWeight: '600',
   },
   content: {
-    padding: theme.spacing.lg,
+    padding: 20,
     alignItems: 'center',
   },
   mainTitle: {
     fontSize: 26,
     fontWeight: '700',
-    marginBottom: theme.spacing.md,
-    color: theme.colors.text,
+    marginBottom: 15,
     textAlign: 'center',
   },
   description: {
     fontSize: 14,
-    color: theme.colors.textLight,
     textAlign: 'center',
-    marginBottom: theme.spacing.lg,
+    marginBottom: 20,
     lineHeight: 22,
   },
   featureList: {
-    marginBottom: theme.spacing.lg,
+    marginBottom: 20,
   },
   featureItem: {
     fontSize: 14,
-    marginVertical: theme.spacing.sm,
-    color: theme.colors.text,
+    marginVertical: 10,
   },
   dashboardButtons: {
     width: '100%',
-    gap: theme.spacing.md,
-    marginTop: theme.spacing.lg,
+    gap: 15,
+    marginTop: 20,
   },
   button: {
-    backgroundColor: theme.colors.primary,
-    paddingVertical: theme.spacing.md,
-    paddingHorizontal: theme.spacing.lg,
-    borderRadius: theme.borderRadius.md,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 8,
     alignItems: 'center',
   },
   buttonText: {
-    color: theme.colors.white,
+    color: '#ffffff',
     fontWeight: '600',
     fontSize: 16,
   },
   secondaryButton: {
-    backgroundColor: theme.colors.white,
     borderWidth: 2,
-    borderColor: theme.colors.primary,
   },
   secondaryButtonText: {
-    color: theme.colors.primary,
     fontWeight: '600',
     fontSize: 16,
   },

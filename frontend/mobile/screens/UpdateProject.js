@@ -11,10 +11,9 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchDepartments, fetchEmployees, fetchProjects } from '../store/actions';
 import { showSuccessAlert, showErrorAlert } from '../utils/alerts';
-import { theme } from '../theme';
+import { useTheme, theme as staticTheme } from '../context/ThemeContext';
 
-export default function UpdateProject({ navigation, route }) {
-  const { projectId } = route.params;
+export default function UpdateProject({ navigation, route }) {  const { theme } = useTheme();  const { projectId } = route.params;
   const projects = useSelector((state) => state.projects || []);
   const project = projects.find((p) => p.id === projectId);
 
@@ -177,7 +176,7 @@ export default function UpdateProject({ navigation, route }) {
                   style={[styles.selectorItem, employeeResponsible == e.id && styles.selectorItemActive]}
                   onPress={() => setEmployeeResponsible(e.id)}
                 >
-                  <Text style={[styles.selectorText, employeeResponsible == e.id && styles.selectorTextActive]}>{e.name || e.fullName || e.mail || e.email}</Text>
+                  <Text style={[styles.selectorText, employeeResponsible == e.id && styles.selectorTextActive]}>{e.name || e.fullName || e.mail}</Text>
                 </TouchableOpacity>
               ))}
             </View>
@@ -237,39 +236,39 @@ export default function UpdateProject({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.secondary,
+    backgroundColor: staticTheme.colors.secondary,
   },
   content: {
-    padding: theme.spacing.lg,
+    padding: staticTheme.spacing.lg,
     paddingBottom: 40,
   },
   title: {
     fontSize: 24,
     fontWeight: '700',
-    color: theme.colors.primary,
-    marginBottom: theme.spacing.lg,
+    color: staticTheme.colors.primary,
+    marginBottom: staticTheme.spacing.lg,
   },
   formGroup: {
-    marginBottom: theme.spacing.lg,
+    marginBottom: staticTheme.spacing.lg,
   },
   label: {
     fontSize: 14,
     fontWeight: '600',
-    color: theme.colors.text,
-    marginBottom: theme.spacing.sm,
+    color: staticTheme.colors.text,
+    marginBottom: staticTheme.spacing.sm,
   },
   input: {
-    backgroundColor: theme.colors.white,
+    backgroundColor: staticTheme.colors.card,
     borderWidth: 1,
-    borderColor: theme.colors.border,
-    borderRadius: theme.borderRadius.md,
+    borderColor: staticTheme.colors.border,
+    borderRadius: staticTheme.borderRadius.md,
     paddingVertical: 12,
-    paddingHorizontal: theme.spacing.md,
+    paddingHorizontal: staticTheme.spacing.md,
     fontSize: 14,
-    color: theme.colors.text,
+    color: staticTheme.colors.text,
   },
   textArea: {
-    paddingVertical: theme.spacing.md,
+    paddingVertical: staticTheme.spacing.md,
     height: 120,
     textAlignVertical: 'top',
   },
@@ -278,96 +277,96 @@ const styles = StyleSheet.create({
   },
   statusButtons: {
     flexDirection: 'row',
-    gap: theme.spacing.sm,
+    gap: staticTheme.spacing.sm,
     flexWrap: 'wrap',
   },
   statusBtn: {
     flex: 1,
     minWidth: '30%',
     paddingVertical: 10,
-    paddingHorizontal: theme.spacing.md,
+    paddingHorizontal: staticTheme.spacing.md,
     borderWidth: 1,
-    borderColor: theme.colors.border,
-    borderRadius: theme.borderRadius.md,
-    backgroundColor: theme.colors.white,
+    borderColor: staticTheme.colors.border,
+    borderRadius: staticTheme.borderRadius.md,
+    backgroundColor: staticTheme.colors.card,
   },
   statusBtnActive: {
-    backgroundColor: theme.colors.primary,
-    borderColor: theme.colors.primary,
+    backgroundColor: staticTheme.colors.primary,
+    borderColor: staticTheme.colors.primary,
   },
   statusBtnText: {
     textAlign: 'center',
     fontSize: 13,
     fontWeight: '600',
-    color: theme.colors.text,
+    color: staticTheme.colors.text,
   },
   statusBtnTextActive: {
-    color: theme.colors.white,
+    color: staticTheme.colors.white,
   },
   selector: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: theme.spacing.sm,
+    gap: staticTheme.spacing.sm,
   },
   selectorItem: {
     paddingVertical: 8,
     paddingHorizontal: 12,
-    borderRadius: theme.borderRadius.md,
+    borderRadius: staticTheme.borderRadius.md,
     borderWidth: 1,
-    borderColor: theme.colors.border,
-    backgroundColor: theme.colors.white,
-    marginRight: theme.spacing.sm,
-    marginBottom: theme.spacing.sm,
+    borderColor: staticTheme.colors.border,
+    backgroundColor: staticTheme.colors.card,
+    marginRight: staticTheme.spacing.sm,
+    marginBottom: staticTheme.spacing.sm,
   },
   selectorItemActive: {
-    backgroundColor: theme.colors.primary,
-    borderColor: theme.colors.primary,
+    backgroundColor: staticTheme.colors.primary,
+    borderColor: staticTheme.colors.primary,
   },
   selectorText: {
-    color: theme.colors.text,
+    color: staticTheme.colors.text,
   },
   selectorTextActive: {
-    color: theme.colors.white,
+    color: staticTheme.colors.white,
   },
   helperText: {
-    color: theme.colors.text,
+    color: staticTheme.colors.text,
     fontStyle: 'italic',
     fontSize: 13,
   },
   buttonGroup: {
     flexDirection: 'row',
-    gap: theme.spacing.md,
-    marginTop: theme.spacing.xl,
+    gap: staticTheme.spacing.md,
+    marginTop: staticTheme.spacing.xl,
   },
   cancelBtn: {
     flex: 1,
     paddingVertical: 14,
-    backgroundColor: theme.colors.lightGray,
-    borderRadius: theme.borderRadius.md,
+    backgroundColor: staticTheme.colors.lightGray,
+    borderRadius: staticTheme.borderRadius.md,
   },
   submitBtn: {
     flex: 1,
     paddingVertical: 14,
-    backgroundColor: theme.colors.primary,
-    borderRadius: theme.borderRadius.md,
+    backgroundColor: staticTheme.colors.primary,
+    borderRadius: staticTheme.borderRadius.md,
   },
   cancelBtnText: {
     textAlign: 'center',
     fontSize: 16,
     fontWeight: '600',
-    color: theme.colors.text,
+    color: staticTheme.colors.text,
   },
   submitBtnText: {
     textAlign: 'center',
     fontSize: 16,
     fontWeight: '600',
-    color: theme.colors.white,
+    color: staticTheme.colors.white,
   },
   disabledBtn: {
     opacity: 0.6,
   },
   errorText: {
     fontSize: 16,
-    color: theme.colors.error,
+    color: staticTheme.colors.error,
   },
 });

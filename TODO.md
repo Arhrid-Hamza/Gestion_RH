@@ -1,22 +1,16 @@
-# Database Migration to MongoDB - TODO
+# TODO: Fix UpdateUser.js and Related Issues
 
-## Completed Tasks
-- [x] Analyze existing codebase and confirm MongoDB usage
-- [x] Add Report model to models.js with schema: id, title, content, authorId, date, employeeResponsible
-- [x] Export Report model in models.js
-- [x] Import Report model in server.js
-- [x] Add full CRUD API routes for reports in server.js (GET, POST, PUT, DELETE)
-- [x] Update seedData.js to include employeeResponsible in sample report
+## Tasks
+- [x] Add user data fetching in UpdateUser.js component
+- [x] Populate form fields with existing user data
+- [x] Add loading state for data fetching
+- [x] Handle fetch errors gracefully
+- [x] Add backend validation for required fields in PUT /api/users
+- [x] Test the update functionality
 
-## Pending Tasks
-- [ ] Install and start MongoDB service
-- [ ] Run seedData.js to populate MongoDB with Report data
-- [ ] Verify that the server starts without errors
-- [ ] Test API endpoints for reports
-- [ ] Ensure frontend components work with the new Report model
-
-## Notes
-- The application was already using MongoDB with Mongoose.
-- The main issue was the missing Report model, which has been added and migrated.
-- MongoDB needs to be installed and running for seeding and server operation.
-- To complete the migration: Install MongoDB, start the service, run `node backend/seedData.js`, then `node backend/server.js`.
+## Progress
+- [x] Analyzed the issue: UpdateUser.js didn't fetch existing data, leading to empty updates
+- [x] Downloaded React DevTools
+- [x] Fixed UpdateUser.js to fetch and populate user data
+- [x] Added backend validation for name and email
+- [x] Added useEffect import

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { showSuccessAlert, showErrorAlert } from '../utils/alerts';
-import { theme } from '../theme';
+import { useTheme, theme as staticTheme } from '../context/ThemeContext';
 
 export default function AddUser({ navigation }) {
+  const { theme } = useTheme();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -117,94 +118,94 @@ export default function AddUser({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.secondary,
+    backgroundColor: staticTheme.colors.secondary,
   },
   header: {
-    backgroundColor: theme.colors.white,
-    paddingVertical: theme.spacing.md,
-    paddingHorizontal: theme.spacing.lg,
-    shadowColor: theme.colors.shadow,
+    backgroundColor: staticTheme.colors.card,
+    paddingVertical: staticTheme.spacing.md,
+    paddingHorizontal: staticTheme.spacing.lg,
+    shadowColor: staticTheme.colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-    marginBottom: theme.spacing.lg,
+    marginBottom: staticTheme.spacing.lg,
   },
   headerTitle: {
     fontSize: 24,
     fontWeight: '700',
-    color: theme.colors.primary,
+    color: staticTheme.colors.primary,
   },
   form: {
-    paddingHorizontal: theme.spacing.lg,
-    paddingBottom: theme.spacing.lg,
+    paddingHorizontal: staticTheme.spacing.lg,
+    paddingBottom: staticTheme.spacing.lg,
   },
   formGroup: {
-    marginBottom: theme.spacing.lg,
+    marginBottom: staticTheme.spacing.lg,
   },
   label: {
     fontSize: 14,
     fontWeight: '600',
-    color: theme.colors.primary,
-    marginBottom: theme.spacing.sm,
+    color: staticTheme.colors.primary,
+    marginBottom: staticTheme.spacing.sm,
   },
   input: {
     borderWidth: 1,
-    borderColor: theme.colors.border,
+    borderColor: staticTheme.colors.border,
     padding: 12,
-    borderRadius: theme.borderRadius.md,
+    borderRadius: staticTheme.borderRadius.md,
     fontSize: 14,
-    color: theme.colors.text,
-    backgroundColor: theme.colors.white,
+    color: staticTheme.colors.text,
+    backgroundColor: staticTheme.colors.card,
   },
   roleButtons: {
     flexDirection: 'row',
-    gap: theme.spacing.md,
+    gap: staticTheme.spacing.md,
   },
   roleButton: {
     flex: 1,
     paddingVertical: 12,
-    borderRadius: theme.borderRadius.md,
+    borderRadius: staticTheme.borderRadius.md,
     borderWidth: 2,
-    borderColor: theme.colors.border,
+    borderColor: staticTheme.colors.border,
     alignItems: 'center',
   },
   roleButtonActive: {
-    borderColor: theme.colors.primary,
-    backgroundColor: theme.colors.primary,
+    borderColor: staticTheme.colors.primary,
+    backgroundColor: staticTheme.colors.primary,
   },
   roleButtonText: {
     fontSize: 14,
     fontWeight: '600',
-    color: theme.colors.textLight,
+    color: staticTheme.colors.textLight,
   },
   roleButtonTextActive: {
-    color: theme.colors.white,
+    color: staticTheme.colors.white,
   },
   buttonGroup: {
     flexDirection: 'row',
-    gap: theme.spacing.md,
-    marginTop: theme.spacing.lg,
+    gap: staticTheme.spacing.md,
+    marginTop: staticTheme.spacing.lg,
   },
   button: {
     flex: 1,
-    paddingVertical: theme.spacing.md,
-    borderRadius: theme.borderRadius.md,
+    paddingVertical: staticTheme.spacing.md,
+    borderRadius: staticTheme.borderRadius.md,
     alignItems: 'center',
   },
   submitButton: {
-    backgroundColor: theme.colors.primary,
+    backgroundColor: staticTheme.colors.primary,
   },
   submitButtonText: {
-    color: theme.colors.white,
+    color: staticTheme.colors.white,
     fontWeight: '600',
     fontSize: 14,
   },
   cancelButton: {
-    backgroundColor: theme.colors.border,
+    backgroundColor: staticTheme.colors.border,
   },
   cancelButtonText: {
-    color: theme.colors.text,
+    color: staticTheme.colors.text,
     fontWeight: '600',
     fontSize: 14,
   },

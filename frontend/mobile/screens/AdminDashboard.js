@@ -1,17 +1,18 @@
 import React, { useContext } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { AuthContext } from '../auth/AuthContext';
-import { theme } from '../theme';
+import { useTheme, theme as staticTheme } from '../context/ThemeContext';
 
-const DashboardCard = ({ title, description, onPress }) => (
-  <TouchableOpacity style={styles.card} onPress={onPress}>
-    <Text style={styles.cardTitle}>{title}</Text>
-    <Text style={styles.cardDescription}>{description}</Text>
+const DashboardCard = ({ title, description, onPress, theme }) => (
+  <TouchableOpacity style={[styles.card, { backgroundColor: theme.colors.card, shadowColor: theme.colors.shadow }]} onPress={onPress}>
+    <Text style={[styles.cardTitle, { color: theme.colors.primary }]}>{title}</Text>
+    <Text style={[styles.cardDescription, { color: theme.colors.textLight }]}>{description}</Text>
   </TouchableOpacity>
 );
 
 export default function AdminDashboard({ navigation }) {
   const { signOut } = useContext(AuthContext);
+  const { theme } = useTheme();
 
   const handleLogout = async () => {
     await signOut();
@@ -52,11 +53,11 @@ export default function AdminDashboard({ navigation }) {
   ];
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.navbar}>
-        <Text style={styles.navTitle}>Admin Dashboard</Text>
+    <ScrollView style={[styles.container, { backgroundColor: theme.colors.secondary }]}>
+      <View style={[styles.navbar, { backgroundColor: theme.colors.card }]}>
+        <Text style={[styles.navTitle, { color: theme.colors.primary }]}>Admin Dashboard</Text>
         <TouchableOpacity onPress={handleLogout}>
-          <Text style={styles.logoutBtn}>Logout</Text>
+          <Text style={[styles.logoutBtn, { color: theme.colors.primary }]}>Logout</Text>
         </TouchableOpacity>
       </View>
 
@@ -68,6 +69,7 @@ export default function AdminDashboard({ navigation }) {
               title={card.title}
               description={card.description}
               onPress={card.onPress}
+              theme={theme}
             />
           ))}
         </View>
@@ -86,35 +88,35 @@ export default function AdminDashboard({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.secondary,
+    backgroundColor: staticTheme.colors.secondary,
   },
   navbar: {
-    backgroundColor: theme.colors.white,
-    paddingVertical: theme.spacing.md,
-    paddingHorizontal: theme.spacing.lg,
+    backgroundColor: staticTheme.colors.card,
+    paddingVertical: staticTheme.spacing.md,
+    paddingHorizontal: staticTheme.spacing.lg,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    shadowColor: theme.colors.shadow,
+    shadowColor: staticTheme.colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-    marginBottom: theme.spacing.lg,
+    marginBottom: staticTheme.spacing.lg,
   },
   navTitle: {
     fontSize: 24,
     fontWeight: '700',
-    color: theme.colors.primary,
+    color: staticTheme.colors.primary,
   },
   logoutBtn: {
-    color: theme.colors.primary,
+    color: staticTheme.colors.primary,
     fontWeight: '600',
     fontSize: 14,
   },
   contentPadding: {
-    paddingHorizontal: theme.spacing.lg,
-    paddingBottom: theme.spacing.lg,
+    paddingHorizontal: staticTheme.spacing.lg,
+    paddingBottom: staticTheme.spacing.lg,
   },
   cardGrid: {
     flexDirection: 'row',
@@ -123,11 +125,11 @@ const styles = StyleSheet.create({
   },
   card: {
     width: '48%',
-    backgroundColor: theme.colors.white,
-    borderRadius: theme.borderRadius.lg,
-    padding: theme.spacing.lg,
-    marginBottom: theme.spacing.lg,
-    shadowColor: theme.colors.shadow,
+    backgroundColor: staticTheme.colors.card,
+    borderRadius: staticTheme.borderRadius.lg,
+    padding: staticTheme.spacing.lg,
+    marginBottom: staticTheme.spacing.lg,
+    shadowColor: staticTheme.colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -136,24 +138,24 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: theme.colors.primary,
-    marginBottom: theme.spacing.sm,
+    color: staticTheme.colors.primary,
+    marginBottom: staticTheme.spacing.sm,
   },
   cardDescription: {
     fontSize: 13,
-    color: theme.colors.textLight,
+    color: staticTheme.colors.textLight,
     lineHeight: 18,
   },
   addButton: {
-    backgroundColor: theme.colors.primary,
-    paddingVertical: theme.spacing.md,
-    paddingHorizontal: theme.spacing.lg,
-    borderRadius: theme.borderRadius.md,
+    backgroundColor: staticTheme.colors.primary,
+    paddingVertical: staticTheme.spacing.md,
+    paddingHorizontal: staticTheme.spacing.lg,
+    borderRadius: staticTheme.borderRadius.md,
     alignItems: 'center',
-    marginTop: theme.spacing.lg,
+    marginTop: staticTheme.spacing.lg,
   },
   addButtonText: {
-    color: theme.colors.white,
+    color: staticTheme.colors.white,
     fontWeight: '600',
     fontSize: 16,
   },

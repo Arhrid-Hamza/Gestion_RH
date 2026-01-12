@@ -45,9 +45,10 @@ const projectSchema = new mongoose.Schema({
 const reportSchema = new mongoose.Schema({
   id: Number,
   title: String,
-  generatedBy: String,
-  date: Date,
   content: String,
+  authorId: Number,
+  date: Date,
+  employeeResponsible: Number,
 });
 
 const User = mongoose.model('User', userSchema);

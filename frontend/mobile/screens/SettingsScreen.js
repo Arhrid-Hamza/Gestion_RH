@@ -1,19 +1,19 @@
 import React, { useContext } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Switch } from 'react-native';
 import { AuthContext } from '../auth/AuthContext';
-import { theme } from '../theme';
+import { useTheme } from '../context/ThemeContext';
 
-const SettingRow = ({ label, value, onPress }) => (
-  <TouchableOpacity style={styles.settingRow} onPress={onPress}>
-    <Text style={styles.settingLabel}>{label}</Text>
-    <Text style={styles.settingValue}>{value}</Text>
+const SettingRow = ({ label, value, onPress, theme }) => (
+  <TouchableOpacity style={[styles.settingRow, { borderBottomColor: theme.colors.border }]} onPress={onPress}>
+    <Text style={[styles.settingLabel, { color: theme.colors.text }]}>{label}</Text>
+    <Text style={[styles.settingValue, { color: theme.colors.textLight }]}>{value}</Text>
   </TouchableOpacity>
 );
 
 export default function SettingsScreen({ navigation }) {
   const { user, signOut } = useContext(AuthContext);
+  const { theme, isDarkMode, toggleDarkMode } = useTheme();
   const [notifications, setNotifications] = React.useState(true);
-  const [darkMode, setDarkMode] = React.useState(false);
 
   const handleLogout = async () => {
     await signOut();
@@ -21,29 +21,29 @@ export default function SettingsScreen({ navigation }) {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Settings</Text>
+    <ScrollView style={[styles.container, { backgroundColor: theme.colors.secondary }]}>
+      <View style={[styles.header, { backgroundColor: theme.colors.card, shadowColor: theme.colors.shadow }]}>
+        <Text style={[styles.headerTitle, { color: theme.colors.primary }]}>Settings</Text>
       </View>
 
       <View style={styles.content}>
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Account</Text>
-          <SettingRow label="Email" value={user?.email || 'N/A'} onPress={() => {}} />
-          <SettingRow label="Role" value={user?.role || 'N/A'} onPress={() => {}} />
+        <View style={[styles.section, { backgroundColor: theme.colors.card, shadowColor: theme.colors.shadow }]}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.primary }]}>Account</Text>
+          <SettingRow label="Email" value={user?.email || 'N/A'} onPress={() => {}} theme={theme} />
+          <SettingRow label="Role" value={user?.role || 'N/A'} onPress={() => {}} theme={theme} />
           <TouchableOpacity
-            style={styles.settingRow}
+            style={[styles.settingRow, { borderBottomColor: theme.colors.border }]}
             onPress={() => navigation.navigate('Profile')}
           >
-            <Text style={styles.settingLabel}>Edit Profile</Text>
-            <Text style={styles.settingAction}>→</Text>
+            <Text style={[styles.settingLabel, { color: theme.colors.text }]}>Edit Profile</Text>
+            <Text style={[styles.settingAction, { color: theme.colors.textLight }]}>→</Text>
           </TouchableOpacity>
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Preferences</Text>
-          <View style={styles.switchRow}>
-            <Text style={styles.settingLabel}>Notifications</Text>
+        <View style={[styles.section, { backgroundColor: theme.colors.card, shadowColor: theme.colors.shadow }]}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.primary }]}>Preferences</Text>
+          <View style={[styles.switchRow, { borderBottomColor: theme.colors.border }]}>
+            <Text style={[styles.settingLabel, { color: theme.colors.text }]}>Notifications</Text>
             <Switch
               value={notifications}
               onValueChange={setNotifications}
@@ -51,26 +51,26 @@ export default function SettingsScreen({ navigation }) {
               thumbColor={notifications ? theme.colors.primary : '#f4f3f4'}
             />
           </View>
-          <View style={styles.switchRow}>
-            <Text style={styles.settingLabel}>Dark Mode</Text>
+          <View style={[styles.switchRow, { borderBottomColor: theme.colors.border }]}>
+            <Text style={[styles.settingLabel, { color: theme.colors.text }]}>Dark Mode</Text>
             <Switch
-              value={darkMode}
-              onValueChange={setDarkMode}
+              value={isDarkMode}
+              onValueChange={toggleDarkMode}
               trackColor={{ false: '#ccc', true: theme.colors.primary }}
-              thumbColor={darkMode ? theme.colors.primary : '#f4f3f4'}
+              thumbColor={isDarkMode ? theme.colors.primary : '#f4f3f4'}
             />
           </View>
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Security</Text>
-          <TouchableOpacity style={styles.settingRow} onPress={() => {}}>
-            <Text style={styles.settingLabel}>Change Password</Text>
-            <Text style={styles.settingAction}>→</Text>
+        <View style={[styles.section, { backgroundColor: theme.colors.card, shadowColor: theme.colors.shadow }]}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.primary }]}>Security</Text>
+          <TouchableOpacity style={[styles.settingRow, { borderBottomColor: theme.colors.border }]} onPress={() => {}}>
+            <Text style={[styles.settingLabel, { color: theme.colors.text }]}>Change Password</Text>
+            <Text style={[styles.settingAction, { color: theme.colors.textLight }]}>→</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.settingRow} onPress={() => {}}>
-            <Text style={styles.settingLabel}>Two-Factor Authentication</Text>
-            <Text style={styles.settingValue}>Disabled</Text>
+          <TouchableOpacity style={[styles.settingRow, { borderBottomColor: theme.colors.border }]} onPress={() => {}}>
+            <Text style={[styles.settingLabel, { color: theme.colors.text }]}>Two-Factor Authentication</Text>
+            <Text style={[styles.settingValue, { color: theme.colors.textLight }]}>Disabled</Text>
           </TouchableOpacity>
         </View>
 
@@ -85,34 +85,28 @@ export default function SettingsScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.secondary,
   },
   header: {
-    backgroundColor: theme.colors.white,
-    paddingVertical: theme.spacing.md,
-    paddingHorizontal: theme.spacing.lg,
-    shadowColor: theme.colors.shadow,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-    marginBottom: theme.spacing.lg,
+    marginBottom: 20,
   },
   headerTitle: {
     fontSize: 24,
     fontWeight: '700',
-    color: theme.colors.primary,
   },
   content: {
-    paddingHorizontal: theme.spacing.lg,
-    paddingBottom: theme.spacing.lg,
+    paddingHorizontal: 20,
+    paddingBottom: 20,
   },
   section: {
-    backgroundColor: theme.colors.white,
-    borderRadius: theme.borderRadius.lg,
-    marginBottom: theme.spacing.lg,
+    borderRadius: 12,
+    marginBottom: 20,
     overflow: 'hidden',
-    shadowColor: theme.colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
@@ -121,52 +115,47 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 14,
     fontWeight: '700',
-    color: theme.colors.primary,
-    paddingHorizontal: theme.spacing.md,
-    paddingTop: theme.spacing.md,
-    paddingBottom: theme.spacing.sm,
+    paddingHorizontal: 15,
+    paddingTop: 15,
+    paddingBottom: 10,
   },
   settingRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: theme.spacing.md,
-    paddingVertical: theme.spacing.md,
+    paddingHorizontal: 15,
+    paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
   },
   settingLabel: {
     fontSize: 14,
-    color: theme.colors.text,
     fontWeight: '500',
   },
   settingValue: {
     fontSize: 14,
-    color: theme.colors.textLight,
   },
   settingAction: {
     fontSize: 18,
-    color: theme.colors.textLight,
   },
   switchRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: theme.spacing.md,
-    paddingVertical: theme.spacing.md,
+    paddingHorizontal: 15,
+    paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
   },
   logoutButton: {
-    backgroundColor: theme.colors.error,
-    paddingVertical: theme.spacing.md,
-    borderRadius: theme.borderRadius.md,
+    backgroundColor: '#f44336',
+    paddingVertical: 15,
+    borderRadius: 8,
     alignItems: 'center',
-    marginTop: theme.spacing.lg,
+    marginTop: 20,
   },
   logoutButtonText: {
-    color: theme.colors.white,
+    color: '#ffffff',
     fontWeight: '600',
     fontSize: 16,
   },
 });
+

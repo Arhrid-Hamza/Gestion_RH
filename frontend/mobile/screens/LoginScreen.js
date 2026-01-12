@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { AuthContext } from '../auth/AuthContext';
-import { theme } from '../theme';
+import { useTheme } from '../context/ThemeContext';
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -9,6 +9,7 @@ export default function LoginScreen({ navigation }) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { signIn } = useContext(AuthContext);
+  const { theme } = useTheme();
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -35,9 +36,6 @@ export default function LoginScreen({ navigation }) {
 
       const user = await response.json();
       await signIn(user);
-
-      // Navigate to HomeScreen first for all users
-      navigation.replace('Home');
     } catch (e) {
       console.error('Login error', e);
       setError('Could not reach server');
@@ -48,45 +46,43 @@ export default function LoginScreen({ navigation }) {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}
+      style={[styles.container, { backgroundColor: theme.colors.secondary }]}
     >
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        <View style={styles.formContainer}>
-          <Text style={styles.heading}>HR Management</Text>
-          <Text style={styles.subtitle}>Login to your account</Text>
+        <View style={[styles.formContainer, { backgroundColor: theme.colors.card, shadowColor: theme.colors.shadow }]}>
+          <Text style={[styles.heading, { color: theme.colors.primary }]}>HR Management</Text>
+          <Text style={[styles.subtitle, { color: theme.colors.textLight }]}>Login to your account</Text>
 
           {error ? <Text style={styles.error}>{error}</Text> : null}
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Email</Text>
+            <Text style={[styles.label, { color: theme.colors.text }]}>Email</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { backgroundColor: theme.colors.background, borderColor: theme.colors.border, color: theme.colors.text }]}
               placeholder="Enter your email"
+              placeholderTextColor={theme.colors.textLight}
               value={email}
               onChangeText={(text) => {
                 setEmail(text);
                 setError('');
               }}
-              keyboardType="email-address"
-              placeholderTextColor={theme.colors.textLight}
-              editable={!loading}
               autoCapitalize="none"
+              keyboardType="email-address"
             />
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Password</Text>
+            <Text style={[styles.label, { color: theme.colors.text }]}>Password</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { backgroundColor: theme.colors.background, borderColor: theme.colors.border, color: theme.colors.text }]}
               placeholder="Enter your password"
+              placeholderTextColor={theme.colors.textLight}
               value={password}
               onChangeText={(text) => {
                 setPassword(text);
                 setError('');
               }}
               secureTextEntry
-              placeholderTextColor={theme.colors.textLight}
-              editable={!loading}
             />
           </View>
 
@@ -106,20 +102,17 @@ export default function LoginScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.secondary,
   },
   scrollContent: {
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: theme.spacing.xl,
+    paddingVertical: 30,
   },
   formContainer: {
     width: '90%',
-    backgroundColor: theme.colors.white,
-    padding: theme.spacing.xl,
-    borderRadius: theme.borderRadius.lg,
-    shadowColor: theme.colors.shadow,
+    padding: 30,
+    borderRadius: 12,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.15,
     shadowRadius: 8,
@@ -130,51 +123,45 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginBottom: 8,
     textAlign: 'center',
-    color: theme.colors.primary,
   },
   subtitle: {
     fontSize: 14,
-    color: theme.colors.textLight,
     textAlign: 'center',
-    marginBottom: theme.spacing.lg,
+    marginBottom: 20,
   },
   inputGroup: {
-    marginBottom: theme.spacing.lg,
+    marginBottom: 20,
   },
   label: {
     fontWeight: '600',
-    color: theme.colors.primary,
-    marginBottom: theme.spacing.sm,
+    marginBottom: 10,
     fontSize: 14,
   },
   input: {
     borderWidth: 1,
-    borderColor: theme.colors.border,
     padding: 12,
-    borderRadius: theme.borderRadius.md,
+    borderRadius: 8,
     fontSize: 16,
-    color: theme.colors.text,
-    backgroundColor: theme.colors.white,
   },
   error: {
-    color: theme.colors.error,
-    marginBottom: theme.spacing.md,
+    color: '#f44336',
+    marginBottom: 15,
     textAlign: 'center',
     fontSize: 14,
     fontWeight: '500',
   },
   button: {
-    backgroundColor: theme.colors.primary,
+    backgroundColor: '#2e7d32',
     padding: 14,
-    borderRadius: theme.borderRadius.md,
+    borderRadius: 8,
     alignItems: 'center',
-    marginTop: theme.spacing.md,
+    marginTop: 15,
   },
   buttonDisabled: {
     opacity: 0.6,
   },
   buttonText: {
-    color: theme.colors.white,
+    color: '#ffffff',
     fontSize: 16,
     fontWeight: '600',
   },

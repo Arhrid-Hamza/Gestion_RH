@@ -3,7 +3,7 @@ import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDepartments } from '../store/actions';
 import { showConfirmationAlert, showSuccessAlert, showErrorAlert } from '../utils/alerts';
-import { theme } from '../theme';
+import { useTheme, theme as staticTheme } from '../context/ThemeContext';
 
 const DepartmentItem = ({ department, onEdit, onDelete }) => (
   <View style={styles.departmentCard}>
@@ -23,6 +23,7 @@ const DepartmentItem = ({ department, onEdit, onDelete }) => (
 );
 
 export default function DepartmentList({ navigation }) {
+  const { theme } = useTheme();
   const dispatch = useDispatch();
   const departments = useSelector((state) => state.departments || []);
 
@@ -87,51 +88,51 @@ export default function DepartmentList({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.secondary,
+    backgroundColor: staticTheme.colors.secondary,
   },
   header: {
-    backgroundColor: theme.colors.white,
+    backgroundColor: staticTheme.colors.card,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: theme.spacing.md,
-    paddingHorizontal: theme.spacing.lg,
-    shadowColor: theme.colors.shadow,
+    paddingVertical: staticTheme.spacing.md,
+    paddingHorizontal: staticTheme.spacing.lg,
+    shadowColor: staticTheme.colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-    marginBottom: theme.spacing.lg,
+    marginBottom: staticTheme.spacing.lg,
   },
   headerTitle: {
     fontSize: 24,
     fontWeight: '700',
-    color: theme.colors.primary,
+    color: staticTheme.colors.primary,
   },
   addBtn: {
-    backgroundColor: theme.colors.primary,
+    backgroundColor: staticTheme.colors.primary,
     paddingVertical: 8,
     paddingHorizontal: 12,
-    borderRadius: theme.borderRadius.md,
+    borderRadius: staticTheme.borderRadius.md,
   },
   addBtnText: {
-    color: theme.colors.white,
+    color: staticTheme.colors.white,
     fontWeight: '600',
     fontSize: 14,
   },
   listContent: {
-    paddingHorizontal: theme.spacing.lg,
-    paddingBottom: theme.spacing.lg,
+    paddingHorizontal: staticTheme.spacing.lg,
+    paddingBottom: staticTheme.spacing.lg,
   },
   departmentCard: {
-    backgroundColor: theme.colors.white,
-    borderRadius: theme.borderRadius.md,
-    padding: theme.spacing.md,
-    marginBottom: theme.spacing.md,
+    backgroundColor: staticTheme.colors.card,
+    borderRadius: staticTheme.borderRadius.md,
+    padding: staticTheme.spacing.md,
+    marginBottom: staticTheme.spacing.md,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    shadowColor: theme.colors.shadow,
+    shadowColor: staticTheme.colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
@@ -143,36 +144,36 @@ const styles = StyleSheet.create({
   departmentName: {
     fontSize: 16,
     fontWeight: '600',
-    color: theme.colors.text,
+    color: staticTheme.colors.text,
     marginBottom: 4,
   },
   departmentDescription: {
     fontSize: 13,
-    color: theme.colors.textLight,
+    color: staticTheme.colors.textLight,
   },
   buttonGroup: {
     flexDirection: 'row',
-    gap: theme.spacing.sm,
+    gap: staticTheme.spacing.sm,
   },
   editBtn: {
-    backgroundColor: theme.colors.info,
+    backgroundColor: staticTheme.colors.info,
     paddingVertical: 6,
     paddingHorizontal: 10,
-    borderRadius: theme.borderRadius.sm,
+    borderRadius: staticTheme.borderRadius.sm,
   },
   editBtnText: {
-    color: theme.colors.white,
+    color: staticTheme.colors.white,
     fontSize: 12,
     fontWeight: '600',
   },
   deleteBtn: {
-    backgroundColor: theme.colors.error,
+    backgroundColor: staticTheme.colors.error,
     paddingVertical: 6,
     paddingHorizontal: 10,
-    borderRadius: theme.borderRadius.sm,
+    borderRadius: staticTheme.borderRadius.sm,
   },
   deleteBtnText: {
-    color: theme.colors.white,
+    color: staticTheme.colors.white,
     fontSize: 12,
     fontWeight: '600',
   },
